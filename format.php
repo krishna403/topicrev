@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/filelib.php');
 require_once($CFG->libdir.'/completionlib.php');
+require_once($CFG->libdir.'/moodlelib.php');
 
 // Horrible backwards compatible parameter aliasing..
 if ($topic = optional_param('topic', 0, PARAM_INT)) {
