@@ -19,7 +19,7 @@
  *
  * @since     Moodle 2.0
  * @package   format_topicsrev
- * @copyright 2009 Sam Hemelryk
+ * @copyright 2014 Krishna pratap singh
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

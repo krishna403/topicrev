@@ -18,8 +18,8 @@
  * Topicsrev course format.  Display the whole course as "topicsrev" made of modules.
  *
  * @package format_topicsrev
- * @copyright 2006 The Open University
- * @author N.D.Freear@open.ac.uk, and others.
+ * @copyright 2014 krishna pratap singh
+ * @author krishna pratap singh
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/filelib.php');
 require_once($CFG->libdir.'/completionlib.php');
-require_once($CFG->libdir.'/moodlelib.php');
+//require_once($CFG->libdir.'/moodlelib.php');
 
 // Horrible backwards compatible parameter aliasing..
 if ($topic = optional_param('topic', 0, PARAM_INT)) {

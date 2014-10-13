@@ -18,7 +18,7 @@
  * Renderer for outputting the topicsrev course format.
  *
  * @package format_topicsrev
- * @copyright 2012 Dan Poltawski
+ * @copyright 2014 Krishna pratap singh
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since Moodle 2.3
  */
@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/course/format/renderer.php');
 require_once($CFG->dirroot.'/course/format/topicsrev/lib.php');
-require_once($CFG->libdir.'/moodlelib.php');
+//require_once($CFG->libdir.'/moodlelib.php');
 
 
 /**
@@ -248,14 +248,7 @@ class format_topicsrev_renderer extends format_section_renderer_base {
         // Can we view the section in question?
         $context = context_course::instance($course->id);
         $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
-     //   $thissectiondates = course_get_format($course)->get_section_dates($displaysection);
-     //   if($thissectiondates->start>time()){
-      //      $thefuture = true;
-      //  } else {
-      //      $thefuture = false;
-     //   }
-        
-        // Can we view the section in question?
+   
         if (!($sectioninfo = $modinfo->get_section_info($displaysection))) {
             // This section doesn't exist
             print_error('unknowncoursesection', 'error', null, $course->fullname);
@@ -288,12 +281,7 @@ class format_topicsrev_renderer extends format_section_renderer_base {
             echo $this->end_section_list();
         }
 
-               
-     //   if ($thefuture){
-          //  if($canviewhidden){
-          //      echo get_string('futureweek', 'format_topicsrev');
-         //  }
-      //  }        
+       
         // Start single-section div
         echo html_writer::start_tag('div', array('class' => 'single-section'));
 
@@ -341,11 +329,7 @@ class format_topicsrev_renderer extends format_section_renderer_base {
 
         // close single-section div.
         echo html_writer::end_tag('div');
-      //  if ($thefuture){
-          ///  if($canviewhidden){
-          //      echo '</fieldset>';
-         //   }
-      //  }  
+      
     }
 
     /**
