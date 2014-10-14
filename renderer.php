@@ -122,7 +122,7 @@ class format_topicsrev_renderer extends format_section_renderer_base {
     
     
     
-     /**
+   /**
      * Output the html for a multiple section page
      *
      * @param stdClass $course The course entry from DB
@@ -132,7 +132,6 @@ class format_topicsrev_renderer extends format_section_renderer_base {
      * @param array $modnamesused (argument not used)
      */
     public function print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused) {
-      
         global $PAGE;
         $modinfo = get_fast_modinfo($course);
         $course = course_get_format($course)->get_course();
@@ -153,7 +152,7 @@ class format_topicsrev_renderer extends format_section_renderer_base {
         $revmodinfo = array_reverse($requiredsections);//reverse sections
         array_unshift($revmodinfo,array_pop($revmodinfo));//move section 0 back to top
         $started = $ended = false;        
-        $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
+      //  $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
         
         
         foreach ($revmodinfo as $section => $thissection) {
@@ -161,20 +160,20 @@ class format_topicsrev_renderer extends format_section_renderer_base {
                 // 0-section is displayed a little different then the others
                 if ($thissection->summary or !empty($modinfo->sections[0]) or $PAGE->user_is_editing()) {
                     echo $this->section_header($thissection, $course, false, 0);
-                   print_section($course, $thissection, null, null, true, "100%", false, 0);
-                  //  course_section_cm_list($course, $thissection, null, null, true, "100%", false, 0);
-                   // course_section_cm_list($course, $thissection, null, null, true, "100%", false, 0);
+                    print_section($course, $thissection, null, null, true, "100%", false, 0);
                     if ($PAGE->user_is_editing()) {
                         print_section_add_menus($course, 0, null, false, false, 0);
                     }
-                   echo $this->section_footer();
+                    echo $this->section_footer();
                 }
                 continue;
             }
-                if($canviewhidden){
-                    $started = true;
-                }
-                
+            
+          //  $thissectiondates = course_get_format($course)->get_section_dates($thissection);
+         //   $thefuture = $thissectiondates->start>time();
+            if(!$started){
+                 $started = true;
+            }
             if ($section > $course->numsections) {
                 // activities inside this section are 'orphaned', this section will be printed as 'stealth' below
                 continue;
@@ -195,12 +194,12 @@ class format_topicsrev_renderer extends format_section_renderer_base {
             }
 
             if (!$PAGE->user_is_editing() && $course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
-                if ($canviewhidden || !$thefuture){
-                    // Display section summary only.
+            
+                // Display section summary only.
                     echo $this->section_summary($thissection, $course, null);
-                }
+             
             } else {
-                if(($canviewhidden && $started && !$ended || $ended) ){
+                if(($started && !$ended || $ended) ){
                     echo $this->section_header($thissection, $course, false, 0);
                     if ($thissection->uservisible) {
                         print_section($course, $thissection, null, null, true, "100%", false, 0);
@@ -211,21 +210,14 @@ class format_topicsrev_renderer extends format_section_renderer_base {
                     echo $this->section_footer();
                 }
             }
-           // if($thissectiondates->start<(time() + (7 * 24 * 60 * 60)) && !$ended){
-                if($canviewhidden){
-                 //   echo '</fieldset>';
-                     $ended = true;
-                }
-               
-         //   }
+        
+                $ended = true;
+          //  }
         }
         if(!$ended){
-            if($canviewhidden){
-             //   echo '</fieldset>';
-                
-            }
             $ended = true;
-		}
+            
+        }
         echo $this->end_section_list();
     }
 	
@@ -247,8 +239,9 @@ class format_topicsrev_renderer extends format_section_renderer_base {
 
         // Can we view the section in question?
         $context = context_course::instance($course->id);
-        $canviewhidden = has_capability('moodle/course:viewhiddensections', $context);
-   
+     
+        
+        // Can we view the section in question?
         if (!($sectioninfo = $modinfo->get_section_info($displaysection))) {
             // This section doesn't exist
             print_error('unknowncoursesection', 'error', null, $course->fullname);
@@ -281,7 +274,8 @@ class format_topicsrev_renderer extends format_section_renderer_base {
             echo $this->end_section_list();
         }
 
-       
+               
+      
         // Start single-section div
         echo html_writer::start_tag('div', array('class' => 'single-section'));
 
@@ -342,13 +336,12 @@ class format_topicsrev_renderer extends format_section_renderer_base {
      */
     protected function get_nav_links($course, $sections, $sectionno) {
         // FIXME: This is really evil and should by using the navigation API.
-        $canviewhidden = has_capability('moodle/course:viewhiddensections', context_course::instance($course->id))
-            or !$course->hiddensections;
+     
 
         $links = array('previous' => '', 'next' => '');
         $back = $sectionno - 1;
         while ($back > 0 and empty($links['previous'])) {
-            if ($canviewhidden || $sections[$back]->uservisible) {
+            if ($sections[$back]->uservisible) {
                 $params = array();
                 if (!$sections[$back]->visible) {
                     $params = array('class' => 'dimmed_text');
@@ -364,8 +357,8 @@ class format_topicsrev_renderer extends format_section_renderer_base {
         while ($forward <= $course->numsections and empty($links['next'])) {
                 $nextsectiondates = course_get_format($course)->get_section_dates($sections[$forward]);
             $shownext = $nextsectiondates->start<time();
-            if($shownext || $canviewhidden){
-                if ($canviewhidden || $sections[$forward]->uservisible) {
+            if($shownext){
+                if ($sections[$forward]->uservisible) {
                     $params = array();
                     if (!$sections[$forward]->visible) {
                         $params = array('class' => 'dimmed_text');
@@ -379,6 +372,4 @@ class format_topicsrev_renderer extends format_section_renderer_base {
         }
         return $links;
     }
-    
-    
 }
