@@ -1,4 +1,3 @@
-//.course-content ul {list-style-type: none;}
 .course-content ul.topicsrev {margin:0;}
 .course-content ul.topicsrev li.section {list-style: none;margin:0 0 5px 0;padding:0;}
 .course-content ul.topicsrev li.section .content {margin:0 40px;}
@@ -8,12 +7,3 @@
 .course-content ul.topicsrev li.section .right {width:40px;text-align:center;padding: 6px 0;}
 .course-content ul.topicsrev li.section .right img.icon { padding: 0 0 4px 0;}
 .course-content ul.topicsrev li.section .left .section-handle img.icon { padding:0; vertical-align: baseline; }
-.course-content ul li.section.main {
-    list-style: none outside none;}
-/*
-.course-content ul.topicsrev li.section .content h1 {
-    color: #777777;
-    font-weight: normal;
-    margin: 0;
-}
-*/
